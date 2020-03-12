@@ -19,7 +19,8 @@ class UserController {
 
       let btn = this.formUpdateEl.querySelector("[type=submit]");
       btn.disabled = true;
-      let values = this.getValues(this.formUpdateEl);
+      let values = this.user.save();
+      this.formUpdateEl;
       let index = this.formUpdateEl.dataset.trIndex;
       let tr = this.tableEl.rows[index];
       let userOld = JSON.parse(tr.dataset.user);
@@ -34,7 +35,10 @@ class UserController {
           }
 
           let user = new User();
+
           user.loadFromJSON(result);
+
+          user.save();
 
           this.getTr(user, tr);
 
@@ -64,8 +68,7 @@ class UserController {
       this.getPhoto(this.formEl).then(
         content => {
           values.photo = content;
-
-          this.insert(values);
+          values.save();
           this.addLine(values);
           this.formEl.reset();
           btn.disabled = false;
@@ -144,14 +147,6 @@ class UserController {
       user.gender
     );
   }
-  getUsersStorage() {
-    let users = [];
-    if (localStorage.getItem("users")) {
-      users = JSON.parse(localStorage.getItem("users"));
-    }
-
-    return users;
-  }
 
   selectAll() {
     let users = this.getUsersStorage();
@@ -160,12 +155,6 @@ class UserController {
       user.loadFromJSON(dataUser);
       this.addLine(user);
     });
-  }
-
-  insert(data) {
-    let users = this.getUsersStorage();
-    users.push(data);
-    localStorage.setItem("users", JSON.stringify(users));
   }
 
   addLine(dataUser) {
