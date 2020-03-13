@@ -19,8 +19,7 @@ class UserController {
 
       let btn = this.formUpdateEl.querySelector("[type=submit]");
       btn.disabled = true;
-      let values = this.user.save();
-      this.formUpdateEl;
+      let values = this.getValues(this.formUpdateEl);
       let index = this.formUpdateEl.dataset.trIndex;
       let tr = this.tableEl.rows[index];
       let userOld = JSON.parse(tr.dataset.user);
